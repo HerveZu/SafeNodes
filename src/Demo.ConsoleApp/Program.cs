@@ -11,7 +11,8 @@ builder
     .RegisterTypes([
         typeof(BlankEvent),
         typeof(PrintNode),
-        typeof(TextInitializer)
+        typeof(TextInitializer),
+        typeof(LogNodeExecution)
     ])
     .AsImplementedInterfaces()
     .InstancePerDependency();

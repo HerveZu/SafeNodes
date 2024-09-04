@@ -1,7 +1,8 @@
 using ErrorOr;
 using JetBrains.Annotations;
+using SafeNodes.Design;
 
-namespace SafeNodes.Design;
+namespace SafeNodes.Runtime;
 
 [PublicAPI]
 public delegate Task<IErrorOr> NodeContextPipelineNext();

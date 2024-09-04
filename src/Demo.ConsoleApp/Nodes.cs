@@ -1,7 +1,22 @@
 using ErrorOr;
 using SafeNodes.Design;
+using SafeNodes.Runtime;
 
 namespace Demo.ConsoleApp;
+
+public sealed class LogNodeExecution : INodeContextPipeline
+{
+    public async Task<IErrorOr> Next(INode node, NodeContextPipelineNext next, CancellationToken cancellationToken)
+    {
+        Console.WriteLine($"---> {node.GetType()}");
+
+        var result = await next();
+        
+        Console.WriteLine($"<--- {node.GetType()}");
+        
+        return result;
+    }
+}
 
 [Api("text")]
 public sealed record TextValue(string Value) : IValue;
