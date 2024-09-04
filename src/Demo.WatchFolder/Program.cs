@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 using Autofac;
-using Demo.ConsoleApp;
+using Demo.WatchFolder;
 using SafeNodes.Runtime;
 using SafeNodes.Runtime.Schemes;
 
@@ -9,7 +9,8 @@ builder.RegisterModule<SafeNodesModule>();
 
 builder
     .RegisterTypes([
-        typeof(BlankEvent),
+        typeof(StartupEvent),
+        typeof(WatchFolderNode),
         typeof(PrintNode),
         typeof(TextInitializer),
         typeof(LogNodeExecution)
@@ -42,24 +43,24 @@ var blueprint = new Blueprint
 {
     Event = new BlueprintEvent
     {
-        EventReference = "blank-event"
+        EventReference = "startup"
     },
     Nodes =
     [
         new BlueprintNode
         {
             Id = "node-1",
-            NodeReference = "print-node",
+            NodeReference = "watch-folder",
             IsEntrypoint = true,
             Inputs =
             [
                 new BlueprintNodeInput
                 {
-                    InputReference = "text",
+                    InputReference = "folder-path",
                     Initializer = new BlueprintNodeInputInitializer
                     {
                         InitializerReference = "text-initializer",
-                        RawValue = "Hello, World !"
+                        RawValue = "C:\\Temp"
                     }
                 }
             ],
@@ -67,7 +68,7 @@ var blueprint = new Blueprint
         new BlueprintNode
         {
             Id = "node-2",
-            NodeReference = "print-node",
+            NodeReference = "print",
             Inputs =
             [
                 new BlueprintNodeInput
@@ -76,17 +77,18 @@ var blueprint = new Blueprint
                     Source = new BlueprintNodeInputSource
                     {
                         NodeId = "node-1",
-                        OutputReference = "text"
+                        OutputReference = "file",
+                        Properties = ["file-path"]
                     }
                 }
             ],
             Trigger = new BlueprintNodeTrigger
             {
                 NodeId = "node-1",
-                TriggerReference = "done"
+                TriggerReference = "file-changed"
             }
         }
     ]
 };
 
-await blueprintRuntime.ExecuteMandatory(blueprint, new OtherData());
+await blueprintRuntime.ExecuteMandatory(blueprint, new StartupData());
