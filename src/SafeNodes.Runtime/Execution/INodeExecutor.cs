@@ -21,7 +21,7 @@ internal delegate void OutputEmittedCallback(EmittedOutput output);
 
 internal interface INodeExecutor
 {
-    IEventBone InitializeEvent(Blueprint blueprint, IEventData eventData);
+    IEventBone? InitializeEvent(Blueprint blueprint, IEventData eventData);
     Task ExecuteNode(BlueprintNode node, IReadOnlyEnvironment environment, CancellationToken cancellationToken);
     void OnNodeOutputEmitted(OutputEmittedCallback callback);
     void OnNodeTriggered(NodeTriggeredCallback callback);

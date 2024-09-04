@@ -4,5 +4,5 @@ namespace SafeNodes.Runtime.Execution;
 
 internal interface IEventFactory
 {
-    IEventBone Create(string reference, IEventData data);
+    IEventBone? Create(string reference, IEventData data);
 }

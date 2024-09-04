@@ -177,8 +177,11 @@ var blueprint = new Blueprint
     ]
 };
 
-// execute the blueprint
-await blueprintRuntime.Execute(blueprint, new BlankData());
+// execute the blueprint, throws if the event data is not compatible with the blueprint's event
+await blueprintRuntime.ExecuteMandatory(blueprint, new BlankData());
+
+// execute the blueprint or skip when the event data is not compatible
+// var blueprintWasExecuted = await blueprintRuntime.Execute(blueprint, new BlankData());
 ```
 
 ## TODO

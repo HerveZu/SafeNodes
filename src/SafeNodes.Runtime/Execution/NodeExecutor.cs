@@ -32,13 +32,18 @@ internal sealed class NodeExecutor(ILifetimeScope lifetimeScope)
             .OnTriggered(callback);
     }
 
-    public IEventBone InitializeEvent(Blueprint blueprint, IEventData eventData)
+    public IEventBone? InitializeEvent(Blueprint blueprint, IEventData eventData)
     {
         var contextRegister = _blueprintExecutionScope.Resolve<IContextRegister>();
         var eventFactory = _blueprintExecutionScope.Resolve<IEventFactory>();
 
         var @event = eventFactory.Create(blueprint.Event.EventReference, eventData);
 
+        if (@event is null)
+        {
+            return null;
+        }
+        
         contextRegister.RegisterScoped(
             new GlobalExecutionContext
             {

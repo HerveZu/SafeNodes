@@ -5,10 +5,15 @@ namespace SafeNodes.Runtime.Execution;
 
 internal sealed class EventFactory(IApiServiceProvider apiServiceProvider) : IEventFactory
 {
-    public IEventBone Create(string reference, IEventData data)
+    public IEventBone? Create(string reference, IEventData data)
     {
         var eventType = typeof(IEvent<>).MakeGenericType(data.GetType());
         var access = apiServiceProvider.GetByReferenceAssignableTo(eventType, reference);
+
+        if (access is null)
+        {
+            return null;
+        }
         
         var castedEvent = (IEventBone)access.Object;
 

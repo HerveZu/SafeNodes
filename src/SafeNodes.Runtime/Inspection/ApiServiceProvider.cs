@@ -27,7 +27,7 @@ internal sealed class ApiServiceProvider(
         return service.GetApiObjectAccess();
     }
 
-    public ApiObjectAccess<object> GetByReferenceAssignableTo(Type targetType, string reference)
+    public ApiObjectAccess<object>? GetByReferenceAssignableTo(Type targetType, string reference)
     {
         var servicesType = typeof(IEnumerable<>).MakeGenericType(targetType);
         var resolvedServices = (IEnumerable<object>)lifetimeScope.Resolve(servicesType);
@@ -35,16 +35,15 @@ internal sealed class ApiServiceProvider(
         var services = resolvedServices
             .Where(service => service.GetType().HasApi())
             .ToArray();
-
+        
         foreach (var service in services)
         {
             BindPropertiesApiContext(service);
         }
 
         return services
-                   .Select(service => service.GetApiObjectAccess())
-                   .FirstOrDefault(service => service.Reference == reference)
-               ?? throw new InvalidApiReferenceException(reference, targetType);
+            .Select(service => service.GetApiObjectAccess())
+            .FirstOrDefault(service => service.Reference == reference);
     }
 
     private void BindPropertiesApiContext(object service)

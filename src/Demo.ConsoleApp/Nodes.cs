@@ -31,6 +31,7 @@ public sealed class TextInitializer : IValueInitializer<TextValue>
 }
 
 public sealed record BlankData : IEventData;
+public sealed record OtherData : IEventData;
 
 [Api("blank-event")]
 public sealed class BlankEvent : IEvent<BlankData>

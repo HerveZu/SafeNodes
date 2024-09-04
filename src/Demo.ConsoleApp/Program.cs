@@ -89,4 +89,4 @@ var blueprint = new Blueprint
     ]
 };
 
-await blueprintRuntime.Execute(blueprint, new BlankData());
+await blueprintRuntime.ExecuteMandatory(blueprint, new OtherData());
