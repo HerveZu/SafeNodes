@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\SafeNodes.Design\SafeNodes.Design.csproj" />
+      <ProjectReference Include="..\SafeNodes.Runtime\SafeNodes.Runtime.csproj" />
+    </ItemGroup>
+
+</Project>
