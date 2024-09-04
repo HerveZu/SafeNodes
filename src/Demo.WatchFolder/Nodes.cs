@@ -33,7 +33,7 @@ public sealed class TextInitializer : IValueInitializer<TextValue>
 [Api("local-file")]
 public sealed record LocalFile : IValue
 {
-    [Api("file-path")] 
+    [Api("file-path")]
     public required TextValue FilePath { get; init; }
 }
 
@@ -54,9 +54,7 @@ public sealed class PrintNode(IInput<TextValue> textToPrint) : INode
 {
     [Api("text")]
     public IInput<TextValue> TextToPrint { get; } = textToPrint;
-    
 
-    /// this is where the logic goes
     public Task<ErrorOr<Success>> Execute(CancellationToken cancellationToken)
     {
         var textToPrint = TextToPrint.Get();
@@ -70,11 +68,14 @@ public sealed class PrintNode(IInput<TextValue> textToPrint) : INode
 public sealed class WatchFolderNode(IInput<TextValue> folderPath, IOutput<LocalFile> changedFile, ITrigger fileChanged)
     : INode
 {
-    [Api("folder-path")] public IInput<TextValue> FolderPath { get; } = folderPath;
+    [Api("folder-path")]
+    public IInput<TextValue> FolderPath { get; } = folderPath;
 
-    [Api("file")] public IOutput<LocalFile> ChangedFile { get; } = changedFile;
+    [Api("file")]
+    public IOutput<LocalFile> ChangedFile { get; } = changedFile;
 
-    [Api("file-changed")] public ITrigger FileChanged { get; } = fileChanged;
+    [Api("file-changed")]
+    public ITrigger FileChanged { get; } = fileChanged;
 
     public async Task<ErrorOr<Success>> Execute(CancellationToken cancellationToken)
     {
@@ -82,12 +83,12 @@ public sealed class WatchFolderNode(IInput<TextValue> folderPath, IOutput<LocalF
         Console.WriteLine($"Watching {folderPath}");
 
         var watcher = new FileSystemWatcher();
-        
+
         watcher.Path = folderPath;
         watcher.NotifyFilter = NotifyFilters.LastWrite;
         watcher.Filter = "*.*";
         watcher.EnableRaisingEvents = true;
-        
+
         watcher.Changed += async (_, e) =>
         {
             ChangedFile.Set(new LocalFile
