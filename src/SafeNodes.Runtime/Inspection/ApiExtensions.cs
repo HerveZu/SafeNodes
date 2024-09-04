@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 using SafeNodes.Design;
-using SafeNodes.Internal.Reflexion;
+using SafeNodes.Internal.Reflection;
 
 namespace SafeNodes.Runtime.Inspection;
 

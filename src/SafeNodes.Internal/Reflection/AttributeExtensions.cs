@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace SafeNodes.Internal.Reflexion;
+namespace SafeNodes.Internal.Reflection;
 
 public static class AttributeExtensions
 {

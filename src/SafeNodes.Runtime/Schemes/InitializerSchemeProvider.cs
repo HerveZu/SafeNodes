@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 using SafeNodes.Design;
-using SafeNodes.Internal.Reflexion;
+using SafeNodes.Internal.Reflection;
 using SafeNodes.Runtime.Inspection;
 
 namespace SafeNodes.Runtime.Schemes;

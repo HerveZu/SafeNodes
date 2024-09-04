@@ -1,4 +1,4 @@
-﻿namespace SafeNodes.Internal.Reflexion;
+﻿namespace SafeNodes.Internal.Reflection;
 
 public static class TypeExtensions
 {

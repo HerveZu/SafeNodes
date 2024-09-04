@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using SafeNodes.Internal.Reflexion;
+using SafeNodes.Internal.Reflection;
 
 namespace SafeNodes.Runtime.Inspection;
 
