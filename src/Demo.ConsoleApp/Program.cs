@@ -42,8 +42,7 @@ var blueprint = new Blueprint
 {
     Event = new BlueprintEvent
     {
-        EventReference = "blank-event",
-        PropertyActivations = []
+        EventReference = "blank-event"
     },
     Nodes =
     [

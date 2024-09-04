@@ -13,7 +13,7 @@ public sealed record Blueprint
 public sealed record BlueprintEvent
 {
     public required string EventReference { get; init; }
-    public required IEnumerable<BlueprintEventPropertyActivation> PropertyActivations { get; init; }
+    public IEnumerable<BlueprintEventPropertyActivation> PropertyActivations { get; init; } = [];
 }
 
 [PublicAPI]
@@ -31,7 +31,7 @@ public sealed record BlueprintNode
     public required string NodeReference { get; init; }
     public bool IsEntrypoint { get; init; }
     public BlueprintNodeTrigger? Trigger { get; init; }
-    public required IEnumerable<BlueprintNodeInput> Inputs { get; init; }
+    public IEnumerable<BlueprintNodeInput> Inputs { get; init; } = [];
 }
 
 [PublicAPI]
