@@ -57,12 +57,12 @@ public sealed class PrintNode(IInput<TextValue> textToPrint) : INode
     
 
     /// this is where the logic goes
-    public async Task<ErrorOr<Success>> Execute(CancellationToken cancellationToken)
+    public Task<ErrorOr<Success>> Execute(CancellationToken cancellationToken)
     {
         var textToPrint = TextToPrint.Get();
         Console.WriteLine(textToPrint);
 
-        return Result.Success;
+        return Task.FromResult<ErrorOr<Success>>(Result.Success);
     }
 }
 
@@ -81,7 +81,7 @@ public sealed class WatchFolderNode(IInput<TextValue> folderPath, IOutput<LocalF
         var folderPath = FolderPath.Get().Value;
         Console.WriteLine($"Watching {folderPath}");
 
-        var watcher = new FileSystemWatcher();;
+        var watcher = new FileSystemWatcher();
         
         watcher.Path = folderPath;
         watcher.NotifyFilter = NotifyFilters.LastWrite;
