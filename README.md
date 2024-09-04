@@ -6,7 +6,7 @@ It consists in 3 main projects :
 
 - **SafeNodes.Runtime** : The runtime that executes blueprints and generates schemes representing your nodes system definition.
 
-- **SafeNodes.Internals** : A set of tools used internally.
+- **SafeNodes.Internal** : A set of tools used internally.
 
 > [!NOTE]
 > By design, user facing contracts such as events, values or nodes must implement marker interfaces.
