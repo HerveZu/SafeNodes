@@ -38,6 +38,11 @@ public sealed class SafeNodesModule : Module
             .RegisterGeneric(typeof(EventValue<>))
             .As(typeof(IEventValue<>))
             .InstancePerDependency();
+
+        builder
+            .RegisterGeneric(typeof(NodeContextStackExecutionPipeline<>))
+            .AsImplementedInterfaces()
+            .InstancePerDependency();
         
         builder
             .RegisterTypes([
@@ -49,7 +54,6 @@ public sealed class SafeNodesModule : Module
                 typeof(EventFactory),
                 
                 typeof(EnvironmentValueProvider),
-                typeof(NodeContextStackExecutionPipeline),
                 typeof(NodeExecutor),
                 typeof(BlueprintRuntime),
                 

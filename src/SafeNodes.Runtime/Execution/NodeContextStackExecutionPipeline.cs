@@ -3,12 +3,12 @@ using SafeNodes.Design;
 
 namespace SafeNodes.Runtime.Execution;
 
-internal sealed class NodeContextStackExecutionPipeline(INodeContextPipeline[] pipelines) 
-    : INodeContextExecutionPipeline
+internal sealed class NodeContextStackExecutionPipeline<TNode>(INodeContextPipeline<TNode>[] pipelines) 
+    : INodeContextExecutionPipeline<TNode> where TNode : INode
 {
-    public async Task Execute(INode node, CancellationToken cancellationToken)
+    public async Task Execute(TNode node, CancellationToken cancellationToken)
     {
-        var pipelinesStack = new Stack<INodeContextPipeline>(pipelines.Reverse());
+        var pipelinesStack = new Stack<INodeContextPipeline<TNode>>(pipelines.Reverse());
 
         await Next();
         return;

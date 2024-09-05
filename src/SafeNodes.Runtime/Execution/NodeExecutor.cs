@@ -68,7 +68,6 @@ internal sealed class NodeExecutor(ILifetimeScope lifetimeScope)
 
         var apiServiceProvider = nodeExecutionScope.Resolve<IApiServiceProvider>();
         var contextRegister = nodeExecutionScope.Resolve<IContextRegister>();
-        var executionPipeline = nodeExecutionScope.Resolve<INodeContextExecutionPipeline>();
 
         contextRegister.RegisterScoped(
             new NodeExecutionContext
@@ -102,7 +101,14 @@ internal sealed class NodeExecutor(ILifetimeScope lifetimeScope)
                 });
         }
 
-        var nodeAccess = apiServiceProvider.GetByReference<INode>(node.NodeReference);
-        await executionPipeline.Execute(nodeAccess.Object, cancellationToken);
+        var (_, runtimeNode) = apiServiceProvider.GetByReference<INode>(node.NodeReference);
+        
+        var executionPipelineType = typeof(INodeContextExecutionPipeline<>).MakeGenericType(runtimeNode.GetType());
+        var executionPipelineExecuteMethod =
+            executionPipelineType.GetMethod(nameof(INodeContextExecutionPipeline<INode>.Execute))!;
+        
+        var executionPipeline = nodeExecutionScope.Resolve(executionPipelineType);
+        
+        await (Task)executionPipelineExecuteMethod.Invoke(executionPipeline, [runtimeNode, cancellationToken])!;
     }
 }

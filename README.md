@@ -91,6 +91,26 @@ public sealed class PrintNode(IInput<TextValue> textToPrint, ITrigger done, IOut
 }
 ```
 
+### Pipelines
+```csharp
+// make nodes to benchmark implement this interface
+public interface IBenchmarkMe;
+
+public sealed class BenchmarkNodes<TNode> : INodeContextPipeline<TNode> 
+    where TNode : IBenchmarkMe, INode
+{
+    public async Task<IErrorOr> Next(TNode node, NodeContextPipelineNext next, CancellationToken cancellationToken)
+    {
+        var stopwatch = new Stopwatch();
+        var result = await next();
+
+        Console.WriteLine($"{typeof(TNode)} execution time ticks : {stopwatch.ElapsedTicks}");
+
+        return result;
+    }
+}
+```
+
 ### Running a blueprint
 ```csharp
 // setup a DI container
@@ -107,6 +127,11 @@ builder
         typeof(PrintNode),
         typeof(TrimTextInitializer)
     ])
+    .AsImplementedInterfaces()
+    .InstancePerDependency();
+
+builder
+    .RegisterGeneric(typeof(BenchmarkNodes<>))
     .AsImplementedInterfaces()
     .InstancePerDependency();
 

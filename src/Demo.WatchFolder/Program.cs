@@ -12,9 +12,18 @@ builder
         typeof(StartupEvent),
         typeof(WatchFolderNode),
         typeof(PrintNode),
-        typeof(TextInitializer),
-        typeof(LogNodeExecution)
+        typeof(TextInitializer)
     ])
+    .AsImplementedInterfaces()
+    .InstancePerDependency();
+
+builder
+    .RegisterGeneric(typeof(LogNodeExecution<>))
+    .AsImplementedInterfaces()
+    .InstancePerDependency();
+
+builder
+    .RegisterGeneric(typeof(BenchmarkNodes<>))
     .AsImplementedInterfaces()
     .InstancePerDependency();
 

@@ -2,7 +2,8 @@ using SafeNodes.Design;
 
 namespace SafeNodes.Runtime.Execution;
 
-internal interface INodeContextExecutionPipeline
+internal interface INodeContextExecutionPipeline<in TNode> 
+    where TNode : INode
 {
-    Task Execute(INode node, CancellationToken cancellationToken);
+    Task Execute(TNode node, CancellationToken cancellationToken);
 }

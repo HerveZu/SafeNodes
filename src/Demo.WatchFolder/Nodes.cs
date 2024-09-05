@@ -1,22 +1,41 @@
+using System.Diagnostics;
 using ErrorOr;
 using SafeNodes.Design;
 using SafeNodes.Runtime;
 
 namespace Demo.WatchFolder;
 
-public sealed class LogNodeExecution : INodeContextPipeline
+public interface IBenchmarkMe;
+
+public sealed class LogNodeExecution<TNode> : INodeContextPipeline<TNode> 
+    where TNode : INode
 {
-    public async Task<IErrorOr> Next(INode node, NodeContextPipelineNext next, CancellationToken cancellationToken)
+    public async Task<IErrorOr> Next(TNode node, NodeContextPipelineNext next, CancellationToken cancellationToken)
     {
-        Console.WriteLine($"---> {node.GetType()}");
+        Console.WriteLine($"---> {typeof(TNode)}");
 
         var result = await next();
 
-        Console.WriteLine($"<--- {node.GetType()}");
+        Console.WriteLine($"<--- {typeof(TNode)}");
 
         return result;
     }
 }
+
+public sealed class BenchmarkNodes<TNode> : INodeContextPipeline<TNode> 
+    where TNode : IBenchmarkMe, INode
+{
+    public async Task<IErrorOr> Next(TNode node, NodeContextPipelineNext next, CancellationToken cancellationToken)
+    {
+        var stopwatch = new Stopwatch();
+        var result = await next();
+
+        Console.WriteLine($"{typeof(TNode)} execution time ticks : {stopwatch.ElapsedTicks}");
+
+        return result;
+    }
+}
+
 
 [Api("text")]
 public sealed record TextValue(string Value) : IValue;
@@ -50,7 +69,7 @@ public sealed class StartupEvent : IEvent<StartupData>
 }
 
 [Api("print")]
-public sealed class PrintNode(IInput<TextValue> textToPrint) : INode
+public sealed class PrintNode(IInput<TextValue> textToPrint) : INode, IBenchmarkMe
 {
     [Api("text")]
     public IInput<TextValue> TextToPrint { get; } = textToPrint;
