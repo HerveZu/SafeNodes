@@ -120,7 +120,7 @@ var builder = new ContainerBuilder();
 builder.RegisterModule<SafeNodesModule>();
 
 // your defined types need to be added to the DI container !! 
-// the recommanded lifetime is Transicent (InstancePerDependency)
+// the recommended lifetime is Transient (InstancePerDependency)
 builder
     .RegisterTypes([
         typeof(BlankEvent),
@@ -142,7 +142,8 @@ await using var scope = app.BeginLifetimeScope();
 var blueprintRuntime = scope.Resolve<IBlueprintRuntime>();
 Console.WriteLine("Runtime ...");
 
-// this is your blueprint definition. Use the API references in it.
+// this is your blueprint definition.
+// use the API references here.
 var blueprint = new Blueprint
 {
     Event = new BlueprintEvent
