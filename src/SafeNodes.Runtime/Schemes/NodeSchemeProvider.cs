@@ -8,6 +8,7 @@ namespace SafeNodes.Runtime.Schemes;
 public sealed record NodeScheme : IScheme
 {
     public required string Reference { get; init; }
+    public required string? Docs { get; init; }
     public required IEnumerable<NodeInputScheme> Inputs { get; init; }
     public required IEnumerable<NodeOutputScheme> Outputs { get; init; }
     public required IEnumerable<NodeTriggerScheme> Triggers { get; init; }
@@ -17,6 +18,7 @@ public sealed record NodeScheme : IScheme
 public sealed record NodeInputScheme
 {
     public required string Reference { get; init; }
+    public required string? Docs { get; init; }
     public required string TypeReference { get; init; }
 }
 
@@ -24,6 +26,7 @@ public sealed record NodeInputScheme
 public sealed record NodeOutputScheme
 {
     public required string Reference { get; init; }
+    public required string? Docs { get; init; }
     public required string TypeReference { get; init; }
 }
 
@@ -31,6 +34,7 @@ public sealed record NodeOutputScheme
 public sealed record NodeTriggerScheme
 {
     public required string Reference { get; init; }
+    public required string? Docs { get; init; }
 }
 
 
@@ -63,7 +67,8 @@ internal sealed class NodeSchemeProvider(
         
         return new NodeScheme
         {
-            Reference = access.Reference,
+            Reference = access.Api.Reference,
+            Docs = access.Api.Docs,
             Inputs = inputs,
             Outputs = outputs,
             Triggers = triggers
@@ -80,8 +85,9 @@ internal sealed class NodeSchemeProvider(
 
         return new NodeInputScheme
         {
-            Reference = access.Reference,
-            TypeReference = valueAccess.Reference
+            Reference = access.Api.Reference,
+            Docs = access.Api.Docs,
+            TypeReference = valueAccess.Api.Reference
         };
     }
 
@@ -95,8 +101,9 @@ internal sealed class NodeSchemeProvider(
 
         return new NodeOutputScheme
         {
-            Reference = access.Reference,
-            TypeReference = valueAccess.Reference
+            Reference = access.Api.Reference,
+            Docs = access.Api.Docs,
+            TypeReference = valueAccess.Api.Reference
         };
     }
 
@@ -104,7 +111,8 @@ internal sealed class NodeSchemeProvider(
     {
         return new NodeTriggerScheme
         {
-            Reference = access.Reference
+            Reference = access.Api.Reference,
+            Docs = access.Api.Docs
         };
     }
 }

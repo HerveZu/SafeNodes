@@ -11,6 +11,11 @@ internal sealed class ApiValueTypeProvider : IApiTypeProvider
     {
         return type.GetApiObjectAccess(type);
     }
+    
+    public ApiObjectAccess<Type>? GetFromTypeOrDefault(Type type)
+    {
+        return type.HasApi() ? GetFromType(type) : null;
+    }
 
     public IEnumerable<ApiObjectAccess<Type>> GetAssignableTo(Type targetType)
     {

@@ -43,7 +43,7 @@ internal sealed class ApiServiceProvider(
 
         return services
             .Select(service => service.GetApiObjectAccess())
-            .FirstOrDefault(service => service.Reference == reference);
+            .FirstOrDefault(service => service.Api.Reference == reference);
     }
 
     private void BindPropertiesApiContext(object service)
@@ -52,7 +52,7 @@ internal sealed class ApiServiceProvider(
 
         foreach (var access in propertiesAccesses)
         {
-            contextBinder.Bind(access.Reference, access.Object);
+            contextBinder.Bind(access.Api.Reference, access.Object);
         }
     }
 }

@@ -15,7 +15,7 @@ internal static class ApiExtensions
     {
         var api = provider.GetApi();
 
-        return new ApiObjectAccess<T>(api.Reference, obj);
+        return new ApiObjectAccess<T>(api, obj);
     }
 
     public static ApiObjectAccess<T> GetApiObjectAccess<T>(this T obj)
@@ -23,7 +23,7 @@ internal static class ApiExtensions
     {
         var api = obj.GetType().GetApi();
 
-        return new ApiObjectAccess<T>(api.Reference, obj);
+        return new ApiObjectAccess<T>(api, obj);
     }
 
     public static bool HasReference(this ICustomAttributeProvider provider, string reference)

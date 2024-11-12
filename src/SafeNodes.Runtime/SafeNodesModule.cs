@@ -15,6 +15,11 @@ public sealed class SafeNodesModule : Module
     protected override void Load(ContainerBuilder builder)
     {
         builder
+            .RegisterType<InternalRuntimeProxy>()
+            .As<IRuntime>()
+            .InstancePerDependency();
+        
+        builder
             .RegisterGeneric(typeof(Output<>))
             .As(typeof(IOutput<>))
             .InstancePerDependency();

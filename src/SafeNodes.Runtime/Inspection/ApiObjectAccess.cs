@@ -1,6 +1,8 @@
-﻿namespace SafeNodes.Runtime.Inspection;
+﻿using SafeNodes.Design;
+
+namespace SafeNodes.Runtime.Inspection;
 
 internal sealed record ApiObjectAccess<T>(
-    string Reference,
+    ApiAttribute Api,
     T Object
 );

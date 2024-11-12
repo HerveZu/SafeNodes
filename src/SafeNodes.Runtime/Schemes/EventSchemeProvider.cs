@@ -8,6 +8,7 @@ namespace SafeNodes.Runtime.Schemes;
 public sealed record EventScheme : IScheme
 {
     public required string Reference { get; init; }
+    public required string? Docs { get; init; }
     public required IEnumerable<EventPropertyScheme> Properties { get; init; }
     public required IEnumerable<EventActivationScheme> Activations { get; init; }
 }
@@ -16,6 +17,7 @@ public sealed record EventScheme : IScheme
 public sealed record EventPropertyScheme
 {
     public required string Reference { get; init; }
+    public required string? Docs { get; init; }
     public required string TypeReference { get; init; }
 }
 
@@ -23,6 +25,7 @@ public sealed record EventPropertyScheme
 public sealed record EventActivationScheme
 {
     public required string Reference { get; init; }
+    public required string? Docs { get; init; }
     public required string TypeReference { get; init; }
 }
 
@@ -51,7 +54,8 @@ internal sealed class EventSchemeProvider(
 
         return new EventScheme
         {
-            Reference = access.Reference,
+            Reference = access.Api.Reference,
+            Docs = access.Api.Docs,
             Properties = properties,
             Activations = activations
         };
@@ -67,8 +71,9 @@ internal sealed class EventSchemeProvider(
 
         return new EventPropertyScheme
         {
-            Reference = access.Reference,
-            TypeReference = typeAccess.Reference
+            Reference = access.Api.Reference,
+            Docs = access.Api.Docs,
+            TypeReference = typeAccess.Api.Reference
         };
     }
 
@@ -82,8 +87,9 @@ internal sealed class EventSchemeProvider(
 
         return new EventActivationScheme
         {
-            Reference = access.Reference,
-            TypeReference = typeAccess.Reference
+            Reference = access.Api.Reference,
+            Docs = access.Api.Docs,
+            TypeReference = typeAccess.Api.Reference
         };
     }
 }

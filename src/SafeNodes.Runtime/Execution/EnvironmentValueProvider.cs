@@ -19,7 +19,7 @@ internal sealed class EnvironmentValueProvider(
             .ToArray();
 
         var matchingProperty = eventProperties
-            .FirstOrDefault(propertyAccess => propertyAccess.Reference == propertyReference);
+            .FirstOrDefault(propertyAccess => propertyAccess.Api.Reference == propertyReference);
 
         return matchingProperty?.Object.GetDefined();
     }
@@ -50,7 +50,7 @@ internal sealed class EnvironmentValueProvider(
         {
             var valuePropertyAccess = propertyAccessor
                 .GetValues<IValue>(value)
-                .First(propertyAccess => propertyAccess.Reference == property);
+                .First(propertyAccess => propertyAccess.Api.Reference == property);
 
             value = valuePropertyAccess.Object;
         }
