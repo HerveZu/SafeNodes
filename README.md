@@ -13,10 +13,12 @@ It consists in 3 main projects :
 > This enforces contracts to be explicitly define and decoupled from logic.
 
 ## Getting started
-A blueprint is made of at least two kind of items : events and nodes. 
+A blueprint is made of at least one event and one node. 
 Each blueprint requires exactly one event which is the entrypoint. 
 The entrypoint nodes are the nodes triggered by the events which eventually trigger other nodes.
-You likely want data to flow between events and nodes. To shape this data, custom values can be defined.
+You may want data to flow between your event and nodes. To shape this data, custom values can be defined.
+Events, nodes, values and their properties can be referenced in the blueprint definition.
+Use the `Api` attribute to explicitly create explicit compile-time references.
 
 ### Using SafeNodes assemblies
 ```csharp
@@ -27,13 +29,14 @@ using SafeNodes.Design;
 using SafeNodes.Runtime;
 ```
 
-### Defining a value
+### Defining a custom value
 ```csharp
 [Api("my-text-value")]
 public sealed record TextValue(string Value) : IValue;
 ```
 
 Values can define initializers, they create a new instance of the value from a raw string value. 
+This initializer takes raw values such as `   trim this  ` and returns a trimmed `TextValue` (`trim this`).
 ```csharp
 [Api("my-trim-text-initializer")]
 public sealed class TrimTextInitializer : IValueInitializer<TextValue>
@@ -55,8 +58,10 @@ public sealed class BlankEvent : IEvent<BlankData>
 {
     public void Define(BlankData data)
     {
+        // initializes the event using the data if needed
     }
 
+    // Whether this event will be triggerd, you can use the event data here.
     public bool IsActivated() => true;
 }
 ```
@@ -75,7 +80,7 @@ public sealed class PrintNode(IInput<TextValue> textToPrint, ITrigger done, IOut
     [Api("done")]
     public ITrigger Done { get; } = done;
 
-    /// this is where the logic goes
+    // this is where the logic goes
     public async Task<ErrorOr<Success>> Execute(CancellationToken cancellationToken)
     {
         var textToPrint = TextToPrint.Get();
@@ -92,6 +97,8 @@ public sealed class PrintNode(IInput<TextValue> textToPrint, ITrigger done, IOut
 ```
 
 ### Pipelines
+Pipelines let you define logic around execution of nodes. You can either target all nodes or specific ones using interfaces.
+In this example, the pipeline only targets the nodes implementing `IBenchmarkMe`.
 ```csharp
 // make nodes to benchmark implement this interface
 public interface IBenchmarkMe;
@@ -209,11 +216,3 @@ await blueprintRuntime.ExecuteMandatory(blueprint, new BlankData());
 // execute the blueprint or skip when the event data is not compatible
 // var blueprintWasExecuted = await blueprintRuntime.Execute(blueprint, new BlankData());
 ```
-
-## TODO
-The code was important from an existing project, thus misses important parts
-- [x] Getting started
-- [ ] Publish on nugget.org
-- [ ] Documentation
-- [ ] Unit tests
-- [ ] Blueprint validation
